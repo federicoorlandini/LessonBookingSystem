@@ -1,0 +1,52 @@
+<mxfile host="Electron" modified="2024-06-30T16:33:12.830Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/24.6.4 Chrome/124.0.6367.207 Electron/30.0.6 Safari/537.36" etag="3v5Nd20w7jUijW0fjxlA" version="24.6.4" type="device">
+  <diagram name="Page-1" id="A8Z21q8sCcu-jhZKcuga">
+    <mxGraphModel dx="1036" dy="614" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="xfM_jEDq1WVHNozujM_r-10" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="320" y="310" width="170" height="250" as="geometry" />
+        </mxCell>
+        <mxCell id="xfM_jEDq1WVHNozujM_r-8" value="" style="whiteSpace=wrap;html=1;aspect=fixed;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="320" y="50" width="160" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="xfM_jEDq1WVHNozujM_r-11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="xfM_jEDq1WVHNozujM_r-1" target="xfM_jEDq1WVHNozujM_r-6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="xfM_jEDq1WVHNozujM_r-12" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="xfM_jEDq1WVHNozujM_r-1" target="xfM_jEDq1WVHNozujM_r-2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="xfM_jEDq1WVHNozujM_r-1" value="Administrator" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="170" y="90" width="30" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="xfM_jEDq1WVHNozujM_r-2" value="Create a lesson" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="340" y="140" width="120" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="xfM_jEDq1WVHNozujM_r-3" value="View list of lessons" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="340" y="330" width="120" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="xfM_jEDq1WVHNozujM_r-14" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="xfM_jEDq1WVHNozujM_r-4" target="xfM_jEDq1WVHNozujM_r-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="xfM_jEDq1WVHNozujM_r-15" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="xfM_jEDq1WVHNozujM_r-4" target="xfM_jEDq1WVHNozujM_r-7">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="xfM_jEDq1WVHNozujM_r-4" value="User" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="170" y="405" width="30" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="xfM_jEDq1WVHNozujM_r-5" value="Reserve a seat for a lesson" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="340" y="410" width="120" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="xfM_jEDq1WVHNozujM_r-6" value="View list of lessons" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="340" y="70" width="120" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="xfM_jEDq1WVHNozujM_r-7" value="Cancel reservation" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="340" y="480" width="120" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="xfM_jEDq1WVHNozujM_r-13" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=-0.007;entryY=0.372;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="xfM_jEDq1WVHNozujM_r-4" target="xfM_jEDq1WVHNozujM_r-3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

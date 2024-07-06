@@ -14,8 +14,10 @@ public class LessonController {
         // Validate the input
 
         // Trigger the command
+        var lessonId = UUID.randomUUID();
+
 
         // How the event sourcing allows to return the ID?
-        return new CreateLessonResponse(UUID.randomUUID(), LocalDateTime.now(), 16);
+        return new CreateLessonResponse(lessonId, LocalDateTime.now(), 16);
     }
 }

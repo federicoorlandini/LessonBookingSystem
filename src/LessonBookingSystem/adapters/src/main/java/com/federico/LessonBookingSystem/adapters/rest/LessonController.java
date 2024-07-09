@@ -1,4 +1,4 @@
-package io.rest;
+package com.federico.LessonBookingSystem.adapters.rest;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,3 +21,4 @@ public class LessonController {
         return new CreateLessonResponse(lessonId, LocalDateTime.now(), 16);
     }
 }
+

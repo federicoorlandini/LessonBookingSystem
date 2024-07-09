@@ -1,4 +1,4 @@
-package io.rest;
+package com.federico.LessonBookingSystem.adapters.rest;
 
 import java.time.LocalDateTime;
 import java.util.UUID;

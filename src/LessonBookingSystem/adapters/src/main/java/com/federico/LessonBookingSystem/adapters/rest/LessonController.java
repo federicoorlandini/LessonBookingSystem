@@ -1,5 +1,6 @@
 package com.federico.LessonBookingSystem.adapters.rest;
 
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,6 +20,11 @@ public class LessonController {
 
         // How the event sourcing allows to return the ID?
         return new CreateLessonResponse(lessonId, LocalDateTime.now(), 16);
+    }
+
+    @GetMapping("/test")
+    public int test() {
+        return 1;
     }
 }
 

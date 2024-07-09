@@ -19,12 +19,18 @@ configurations {
 	}
 }
 
+task prepareKotlinBuildScriptModel {
+	// To solve the error message "Task 'prepareKotlinBuildScriptModel' not found in project ':...'"
+	// See https://stackoverflow.com/questions/64290545/task-preparekotlinbuildscriptmodel-not-found-in-project-app
+}
+
 repositories {
 	mavenCentral()
 }
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation project(':adapters')
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'

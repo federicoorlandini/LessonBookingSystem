@@ -1,4 +1,5 @@
 rootProject.name = 'LessonBookingSystem'
 include 'domain'
 include 'adapters'
+include 'bootstrap'
 

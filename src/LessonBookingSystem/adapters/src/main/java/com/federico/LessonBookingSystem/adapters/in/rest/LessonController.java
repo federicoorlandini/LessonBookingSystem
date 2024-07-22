@@ -18,7 +18,7 @@ public class LessonController {
 
     @PostMapping("/lesson")
     public CreateLessonResponse createLesson(@RequestBody CreateLessonRequest request) throws InvalidClassException {
-        // Validate the input
+        // TODO - Validate the input
 
         // Trigger the use case
         var newLesson = createLessonUseCase.CreateLesson(

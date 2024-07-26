@@ -7,17 +7,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import com.federico.LessonBookingSystem.application.services.ports.in.CreateLessonUseCase;
 
-import java.io.InvalidClassException;
+import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.concurrent.ExecutionException;
 
 @RestController
 public class LessonController {
-
     @Autowired
     private CreateLessonUseCase createLessonUseCase;
 
     @PostMapping("/lesson")
-    public CreateLessonResponse createLesson(@RequestBody CreateLessonRequest request) throws InvalidClassException {
+    public CreateLessonResponse createLesson(@RequestBody CreateLessonRequest request) throws IOException, ExecutionException, InterruptedException {
         // TODO - Validate the input
 
         // Trigger the use case
@@ -29,11 +29,6 @@ public class LessonController {
                 newLesson.getDateAndTime(),
                 newLesson.getMaxNumberAttenders());
         return response;
-    }
-
-    @GetMapping("/test")
-    public int test() {
-        return 1;
     }
 }
 

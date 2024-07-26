@@ -1,5 +1,8 @@
 package model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import commands.LessonCommand;
 import events.LessonEvent;
 
@@ -37,7 +40,7 @@ public class Lesson {
 
         // Generate the event
         var events = new ArrayList<LessonEvent>();
-        events.add(new LessonEvent.LessonCreated(command.id(), command.dateAndTime(), command.maxNumberAttenders()));
+        events.add(new LessonEvent.LessonCreated(UUID.randomUUID(), command.id(), command.dateAndTime(), command.maxNumberAttenders()));
         return events;
     }
 

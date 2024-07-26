@@ -3,10 +3,12 @@ package com.federico.LessonBookingSystem.adapters.out.persistence;
 import com.federico.LessonBookingSystem.application.services.ports.out.persistence.LessonRepository;
 import events.LessonEvent;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Qualifier("NullRepository")
+@Repository
 public class NullLessonRepository implements LessonRepository {
     @Override
     public List<LessonEvent> save(List<LessonEvent> events) {

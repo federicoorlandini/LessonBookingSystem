@@ -11,6 +11,7 @@ public sealed interface LessonEvent {
      UUID getEventId();
      UUID getLessonId();
      LocalDateTime getDateAndTime();
+     int getMaxNumberAttenders();
 
      record LessonCreated(
              UUID eventId,
@@ -30,7 +31,12 @@ public sealed interface LessonEvent {
           @JsonSerialize(using = LocalDateSerializer.class)
           @Override
           public LocalDateTime getDateAndTime() {
-               return null;
+               return dateAndTime;
+          }
+
+          @Override
+          public int getMaxNumberAttenders() {
+               return maxNumberAttenders;
           }
      };
 }

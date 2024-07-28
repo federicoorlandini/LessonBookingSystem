@@ -25,9 +25,7 @@ public class EventStoreLessonRepository implements LessonRepository {
                     .builderAsJson(event.getEventId(), event.getClass().getSimpleName(), event)
                     .build();
 
-            var writeResult = dbClient
-                    .appendToStream("Lesson-" + event.getLessonId(), eventData)
-                    .get();
+            dbClient.appendToStream("Lesson-" + event.getLessonId(), eventData).get();
         }
 
         return events;

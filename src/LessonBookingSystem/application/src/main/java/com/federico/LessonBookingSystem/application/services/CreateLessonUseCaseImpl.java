@@ -29,9 +29,6 @@ public class CreateLessonUseCaseImpl implements CreateLessonUseCase {
         // Save the events in the event store
         lessonRepository.save(events);
 
-        // Generate the aggregate current state
-        newLesson.evolve(events);
-
         return newLesson;
     }
 }

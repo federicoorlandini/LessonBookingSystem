@@ -1,8 +1,5 @@
 package model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import commands.LessonCommand;
 import events.LessonEvent;
 
@@ -30,17 +27,24 @@ public class Lesson {
         return maxNumberAttenders;
     }
 
-    public List<LessonEvent> handle(LessonCommand.CreateLessonCommand command) {
+    public List<LessonEvent> handle(LessonCommand.CreateLessonCommand command) throws InvalidClassException {
         // Command handlers should only validate the command and not change the status.
         // Only events should change the aggregate status
 
         // Validation:
-        //  - is the date in the future?
-        //  - is the max number of attendents positive?
+        if( command.dateAndTime().isBefore(LocalDateTime.now())) {
+            throw new UnsupportedOperationException("The date and time for the lesson is in the past");
+        }
+
+        if ( command.maxNumberAttenders() <= 0 ){
+            throw new UnsupportedOperationException("The max number of attenders must be positive");
+        }
 
         // Generate the event
         var events = new ArrayList<LessonEvent>();
-        events.add(new LessonEvent.LessonCreated(UUID.randomUUID(), command.id(), command.dateAndTime(), command.maxNumberAttenders()));
+        events.add(new LessonEvent.LessonCreated(UUID.randomUUID(), command.lessonId(), command.dateAndTime(), command.maxNumberAttenders()));
+
+        evolve(events);
         return events;
     }
 

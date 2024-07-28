@@ -5,7 +5,7 @@ import java.util.UUID;
 
 public sealed interface LessonCommand {
     record CreateLessonCommand(
-        UUID id,
+        UUID lessonId,
         LocalDateTime dateAndTime,
         int maxNumberAttenders) implements LessonCommand { }
 }

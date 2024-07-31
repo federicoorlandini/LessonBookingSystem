@@ -22,10 +22,10 @@ public class EventStoreLessonRepository implements LessonRepository {
     public List<LessonEvent> save(List<LessonEvent> events) throws ExecutionException, InterruptedException, IOException {
         for (LessonEvent event : events) {
             var eventData = EventData
-                    .builderAsJson(event.getEventId(), event.getClass().getSimpleName(), event)
+                    .builderAsJson(event.eventId(), event.getClass().getSimpleName(), event)
                     .build();
 
-            dbClient.appendToStream("Lesson-" + event.getLessonId(), eventData).get();
+            dbClient.appendToStream(event.eventStreamId(), eventData).get();
         }
 
         return events;

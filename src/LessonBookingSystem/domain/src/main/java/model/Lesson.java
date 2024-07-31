@@ -4,6 +4,7 @@ import commands.LessonCommand;
 import events.LessonEvent;
 
 import java.io.InvalidClassException;
+import java.text.MessageFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,9 +43,17 @@ public class Lesson {
 
         // Generate the event
         var events = new ArrayList<LessonEvent>();
-        events.add(new LessonEvent.LessonCreated(UUID.randomUUID(), command.lessonId(), command.dateAndTime(), command.maxNumberAttenders()));
+        events.add(
+                new LessonEvent.LessonCreated(
+                        UUID.randomUUID(),
+                        command.lessonId(),
+                        1,
+                        command.dateAndTime(),
+                        command.maxNumberAttenders()));
 
+        // Use the events to evolve the aggregate status
         evolve(events);
+
         return events;
     }
 
@@ -55,8 +64,7 @@ public class Lesson {
     }
 
     public void evolve(LessonEvent event) throws InvalidClassException {
-        if (event instanceof LessonEvent.LessonCreated) {
-            var e = (LessonEvent.LessonCreated)event;
+        if (event instanceof LessonEvent.LessonCreated e) {
             this.id = e.lessonId();
             this.dateAndTime = e.dateAndTime();
             this.maxNumberAttenders = e.maxNumberAttenders();

@@ -1,6 +1,5 @@
 import commands.LessonCommand;
 import events.LessonEvent;
-import jdk.jshell.spi.ExecutionControl;
 import model.Lesson;
 import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.*;
@@ -44,10 +43,11 @@ public class LessonTests {
         assertThat(events).hasSize(1);
         var event = events.getFirst();
         assertThat(event).isInstanceOf(LessonEvent.LessonCreated.class);
-        assertThat(event.getEventId()).isNotNull();
-        assertThat(event.getLessonId()).isEqualByComparingTo(command.lessonId());
-        assertThat(event.getDateAndTime()).isEqualToIgnoringNanos(command.dateAndTime());
-        assertThat(event.getMaxNumberAttenders()).isEqualTo(command.maxNumberAttenders());
+        assertThat(event.eventId()).isNotNull();
+        assertThat(event.lessonId()).isEqualByComparingTo(command.lessonId());
+        var createdEvent = (LessonEvent.LessonCreated)event;
+        assertThat(createdEvent.dateAndTime()).isEqualToIgnoringNanos(command.dateAndTime());
+        assertThat(createdEvent.maxNumberAttenders()).isEqualTo(command.maxNumberAttenders());
     }
 
     @Test
@@ -61,9 +61,7 @@ public class LessonTests {
 
         // Act and assert
         assertThatExceptionOfType(UnsupportedOperationException.class)
-                .isThrownBy(() -> {
-                    lesson.handle(command);
-                });
+                .isThrownBy(() -> lesson.handle(command));
     }
 
     @Test
@@ -77,13 +75,11 @@ public class LessonTests {
 
         // Act and assert
         assertThatExceptionOfType(UnsupportedOperationException.class)
-                .isThrownBy(() -> {
-                    lesson.handle(command);
-                });
+                .isThrownBy(() -> lesson.handle(command));
     }
 
     @Test
-    public void lesson_whenCreatingALesson_andTheMaxNumberOfAttendantsIsNegative_thenShouldThrowAnUnsupportedOperationException() throws ExecutionControl.NotImplementedException, InvalidClassException {
+    public void lesson_whenCreatingALesson_andTheMaxNumberOfAttendantsIsNegative_thenShouldThrowAnUnsupportedOperationException() {
         // Arrange
         var lesson = new Lesson();
         var command = new LessonCommand.CreateLessonCommand(
@@ -93,8 +89,6 @@ public class LessonTests {
 
         // Act and assert
         assertThatExceptionOfType(UnsupportedOperationException.class)
-                .isThrownBy(() -> {
-                    lesson.handle(command);
-                });
+                .isThrownBy(() -> lesson.handle(command));
     }
 }

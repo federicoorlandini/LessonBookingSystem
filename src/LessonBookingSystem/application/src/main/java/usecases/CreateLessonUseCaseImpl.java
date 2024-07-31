@@ -1,4 +1,4 @@
-package com.federico.LessonBookingSystem.application.services;
+package usecases;
 
 import com.federico.LessonBookingSystem.application.services.ports.in.CreateLessonUseCase;
 import com.federico.LessonBookingSystem.application.services.ports.out.persistence.LessonRepository;
@@ -23,7 +23,7 @@ public class CreateLessonUseCaseImpl implements CreateLessonUseCase {
     public Lesson CreateLesson(LocalDateTime dateAndTime, int maxNumberAttenders) throws IOException, ExecutionException, InterruptedException {
         // Trigger the command
         var command = new LessonCommand.CreateLessonCommand(UUID.randomUUID(), dateAndTime, maxNumberAttenders);
-        var newLesson = new Lesson();
+        var newLesson = new Lesson();   // TODO - Refactor using factory pattern?
         var events = newLesson.handle(command);
 
         // Save the events in the event store

@@ -6,10 +6,11 @@ I started this project to dirt my hands with these technologies:
 * Event modelling (see https://eventmodeling.org/)
 * Event sourcing
 * Hexagonal architecture
-* Java SpringBoot
+* Java SpringBoot with Gradle
 * EventStoreDB (https://www.eventstore.com/eventstoredb)
 * React.js for the front-end
 * The web app must be hosted in Azure
+* GitHub CI pipeline
 
 ## Objective
 The objective of this project is to build a simple software that can help in managing presences for lessons. For example, boxing lessons, gym lessons, etc.

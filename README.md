@@ -1,5 +1,8 @@
 # LESSON BOOKING SYSTEM
 
+# Build pipeline status
+![main branch](https://github.com/federicoorlandini/LessonBookingSystem/actions/workflows/gradle.yml/badge.svg)
+
 ## Why did I start this project?
 I started this project to dirt my hands with these technologies:
 

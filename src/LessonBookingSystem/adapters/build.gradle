@@ -16,6 +16,9 @@ dependencies {
     implementation project(':application')
     implementation project(':domain')
     implementation 'com.eventstore:db-client-java:5.4.0'
+    testImplementation "org.mockito:mockito-inline:+"
+    testImplementation 'org.mockito:mockito-junit-jupiter:+'
+    testImplementation 'org.assertj:assertj-core:3.26.3'
 }
 
 test {

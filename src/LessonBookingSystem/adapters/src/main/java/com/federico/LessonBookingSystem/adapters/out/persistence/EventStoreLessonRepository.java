@@ -15,8 +15,12 @@ import java.util.concurrent.ExecutionException;
 @Repository
 @Qualifier("EventStoreDBRepository")
 public class EventStoreLessonRepository implements LessonRepository {
+    private final EventStoreDBClient dbClient;
+
     @Autowired
-    private EventStoreDBClient dbClient;
+    public EventStoreLessonRepository(EventStoreDBClient dbClient) {
+        this.dbClient = dbClient;
+    }
 
     @Override
     public List<LessonEvent> save(List<LessonEvent> events) throws ExecutionException, InterruptedException, IOException {

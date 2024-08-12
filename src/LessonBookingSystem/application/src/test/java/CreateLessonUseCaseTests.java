@@ -3,7 +3,7 @@ import events.LessonEvent;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
-import usecases.CreateLessonUseCaseImpl;
+import com.federico.LessonBookingSystem.application.usecases.CreateLessonUseCaseImpl;
 
 import java.io.IOException;
 import java.time.LocalDateTime;

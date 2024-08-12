@@ -1,4 +1,4 @@
-package usecases;
+package com.federico.LessonBookingSystem.application.usecases;
 
 import com.federico.LessonBookingSystem.application.services.ports.in.CreateLessonUseCase;
 import com.federico.LessonBookingSystem.application.services.ports.out.persistence.LessonRepository;

@@ -12,9 +12,9 @@ import java.util.concurrent.ExecutionException;
 
 @Repository
 public class EventStoreLessonProjectionsRepository implements LessonProjectionsRepository {
-    private final EventStoreDBProjectionManagementClient projectionClient;
+    private final String LESSONS_PROJECTION_NAME = "LessonProjection";
 
-    private final String LessonsProjectionName = "LessonProjection";
+    private final EventStoreDBProjectionManagementClient projectionClient;
 
     @Autowired
     public EventStoreLessonProjectionsRepository(EventStoreDBProjectionManagementClient projectionClient) {
@@ -22,27 +22,50 @@ public class EventStoreLessonProjectionsRepository implements LessonProjectionsR
     }
 
     @Override
-    public void EnsureProjectionExists() throws ExecutionControl.NotImplementedException, ExecutionException, InterruptedException {
+    public void EnsureProjectionExists() throws ExecutionException, InterruptedException, ExecutionControl.NotImplementedException {
         // Must check if the projection needed by this repository is present in the event store
-        if( !ProjectionExists() ) {
+        if( ProjectionExists() ) {
+            System.out.println(String.format("Projection %s already exists. Skipping the creation.", LESSONS_PROJECTION_NAME));
+        }
+        else {
+            System.out.println(String.format("Projection %s doesn't exist. Creating it.", LESSONS_PROJECTION_NAME));
             CreateProjection();
         }
+    }
+
+    @Override
+    public List<Lesson> GetLessons() {
+        return List.of();
     }
 
     private boolean ProjectionExists() throws ExecutionControl.NotImplementedException, ExecutionException, InterruptedException {
         var projections = projectionClient.list().get();
         return projections
                 .stream()
-                .anyMatch(item -> item.getName().equalsIgnoreCase(LessonsProjectionName));
+                .anyMatch(item -> item.getName().equalsIgnoreCase(LESSONS_PROJECTION_NAME));
     }
 
-    private void CreateProjection() throws ExecutionControl.NotImplementedException {
-        // TODO - Add code here
-        throw new ExecutionControl.NotImplementedException("Not implemented yet");
-    }
+    private void CreateProjection() throws ExecutionControl.NotImplementedException, ExecutionException, InterruptedException {
+        final String LESSON_STATUS_JS_SCRIPT = "fromAll()\n" +
+                "    .when({\n" +
+                "        $init: function () {\n" +
+                "            return {\n" +
+                "                rows: []\n" +
+                "            }\n" +
+                "        },\n" +
+                "        LessonCreated: function (state, event) {\n" +
+                "            const bodyraw = JSON.parse(event.bodyRaw);\n" +
+                "            log('LOG:' + JSON.stringify(bodyraw.lessonId));\n" +
+                "            state.rows.push({lessonId: bodyraw.lessonId,\n" +
+                "                date: bodyraw.date,\n" +
+                "                startTime: bodyraw.startTime,\n" +
+                "                endTime: bodyraw.endTime,\n" +
+                "                maxNumberAttenders: bodyraw.maxNumberAttenders,\n" +
+                "                status: 'open'});\n" +
+                "        }\n" +
+                "    })\n" +
+                "    .outputState()";
 
-    @Override
-    public List<Lesson> GetLessons() {
-        return List.of();
+        projectionClient.create("LessonProjection", LESSON_STATUS_JS_SCRIPT).get();
     }
 }

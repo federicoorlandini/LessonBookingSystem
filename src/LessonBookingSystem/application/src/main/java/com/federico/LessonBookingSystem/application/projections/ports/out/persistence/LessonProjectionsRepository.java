@@ -7,6 +7,6 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public interface LessonProjectionsRepository {
-    void EnsureProjectionExists() throws ExecutionControl.NotImplementedException, ExecutionException, InterruptedException;
+    void EnsureProjectionExists() throws ExecutionException, InterruptedException, ExecutionControl.NotImplementedException;
     List<Lesson> GetLessons();
 }

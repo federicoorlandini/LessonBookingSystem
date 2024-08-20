@@ -9,7 +9,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.federico.LessonBookingSystem.application.services.ports.in.CreateLessonUseCase;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.concurrent.ExecutionException;
@@ -18,8 +19,10 @@ import java.util.concurrent.ExecutionException;
 public class LessonController {
     private final CreateLessonUseCase createLessonUseCase;
 
-    private final String dateTimeFormatterPatter = "dd-MM-yyyy HH:mm";
-    private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(dateTimeFormatterPatter);
+    private final String DATE_FORMATTER_PATTERN = "dd-MM-yyyy";
+    private final String TIME_FORMATTER_PATTERN = "HH:mm";
+    private final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern(DATE_FORMATTER_PATTERN);
+    private final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern(TIME_FORMATTER_PATTERN);
 
     @Autowired
     public LessonController(CreateLessonUseCase createLessonUseCase) {
@@ -29,15 +32,46 @@ public class LessonController {
     @PostMapping("/lesson")
     public ResponseEntity createLesson(@RequestBody CreateLessonRequest request) throws IOException, ExecutionException, InterruptedException {
         // Validation
-        // Date and time format: dd-MM-yyyy HH:mm
-        LocalDateTime dateAndTime;
+        // Date format: dd-MM-yyyy
+        // Time format: HH:mm
+
+        // Validate the date
+        LocalDate date;
         try {
-            dateAndTime = LocalDateTime.parse(request.dayAndTime(), dateTimeFormatter);
+            date = LocalDate.parse(request.date(), DATE_FORMATTER);
         }
         catch (DateTimeParseException ex) {
-            var errorMessage = String.format("Invalid date and time (format %s)", dateTimeFormatterPatter);
+            var errorMessage = String.format("Invalid date (format %s)", DATE_FORMATTER_PATTERN);
             return ResponseEntity.badRequest().body(errorMessage);
         }
+
+        // Validate the star time
+        LocalTime startTime;
+        try {
+            startTime = LocalTime.parse(request.startTime(), TIME_FORMATTER);
+        }
+        catch (DateTimeParseException ex) {
+            var errorMessage = String.format("Invalid start time (format %s)", TIME_FORMATTER_PATTERN);
+            return ResponseEntity.badRequest().body(errorMessage);
+        }
+
+        // Validate the end time
+        LocalTime endTime;
+        try {
+            endTime = LocalTime.parse(request.endTime(), TIME_FORMATTER);
+        }
+        catch (DateTimeParseException ex) {
+            var errorMessage = String.format("Invalid end time (format %s)", TIME_FORMATTER_PATTERN);
+            return ResponseEntity.badRequest().body(errorMessage);
+        }
+
+        // Validate start time is earlier than end time
+        if( startTime.isAfter(endTime) ) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(String.format("StartTime %S is earlier than EndTime %s", request.startTime(), request.endTime()));
+        }
+
 
         if( request.maxNumberAttenders() <= 0 ) {
             return ResponseEntity
@@ -47,11 +81,15 @@ public class LessonController {
 
         // Trigger the use case
         var newLesson = createLessonUseCase.CreateLesson(
-                dateAndTime,
+                date,
+                startTime,
+                endTime,
                 request.maxNumberAttenders());
 
         var response = new CreateLessonResponse(newLesson.getId(),
-                newLesson.getDateAndTime(),
+                newLesson.getDate(),
+                newLesson.getStartTime(),
+                newLesson.getEndTime(),
                 newLesson.getMaxNumberAttenders());
         return ResponseEntity.ok(response);
     }

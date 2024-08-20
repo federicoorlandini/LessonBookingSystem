@@ -11,7 +11,8 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.ResponseEntity;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
@@ -26,6 +27,8 @@ public class LessonControllerTests {
     @InjectMocks
     private LessonController lessonController;
 
+    final UUID uuid = UUID.randomUUID();
+
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
@@ -33,19 +36,24 @@ public class LessonControllerTests {
 
     @Test
     public void testCreateLesson_Success() throws IOException, ExecutionException, InterruptedException {
-        final var uuid = UUID.randomUUID();
-        final var dateAndTimeAsString = "01-01-2023 10:00";
-        final var dateAndTime = LocalDateTime.of(2023, 1, 1, 10, 0);
+        final var dateAsString = "01-01-2023";
+        final var startTimeAsString = "10:00";
+        final var endTimeAsString = "11:00";
+        final var date = LocalDate.of(2023, 1, 1);
+        final var startTime = LocalTime.of(10, 00);
+        final var endTime = LocalTime.of(11, 00);
         final var maxNumberAttenders = 10;
 
         // Given
-        CreateLessonRequest request = new CreateLessonRequest(dateAndTimeAsString, maxNumberAttenders);
+        CreateLessonRequest request = new CreateLessonRequest(dateAsString, startTimeAsString, endTimeAsString, maxNumberAttenders);
         Lesson lesson = mock(Lesson.class);
         when(lesson.getId()).thenReturn(uuid);
-        when(lesson.getDateAndTime()).thenReturn(dateAndTime);
+        when(lesson.getDate()).thenReturn(date);
+        when(lesson.getStartTime()).thenReturn(startTime);
+        when(lesson.getEndTime()).thenReturn(endTime);
         when(lesson.getMaxNumberAttenders()).thenReturn(maxNumberAttenders);
 
-        when(createLessonUseCase.CreateLesson(any(LocalDateTime.class), eq(maxNumberAttenders)))
+        when(createLessonUseCase.CreateLesson(any(LocalDate.class),any(LocalTime.class), any(LocalTime.class), eq(maxNumberAttenders)))
                 .thenReturn(lesson);
 
         // When
@@ -55,27 +63,69 @@ public class LessonControllerTests {
         assertEquals(200, responseEntity.getStatusCodeValue());
         CreateLessonResponse response = (CreateLessonResponse) responseEntity.getBody();
         assertEquals(uuid, response.lessonId());
-        assertEquals(dateAndTime, response.dayAndTime());
+        assertEquals(date, response.date());
+        assertEquals(startTime, response.startTime());
+        assertEquals(endTime, response.endTime());
         assertEquals(maxNumberAttenders, response.maxNumberAttenders());
     }
 
     @Test
-    public void testCreateLesson_InvalidDateFormat() throws IOException, ExecutionException, InterruptedException {
+    public void testCreateLesson_whenStartTimeIsLaterThanEndTime_thenShouldReturnBadRequestResponse() throws IOException, ExecutionException, InterruptedException {
         // Given
-        CreateLessonRequest request = new CreateLessonRequest("invalid-date-format", 10);
+        CreateLessonRequest request = new CreateLessonRequest("01-01-2024", "11:00", "10:00", 10);
 
         // When
         ResponseEntity responseEntity = lessonController.createLesson(request);
 
         // Then
         assertEquals(400, responseEntity.getStatusCodeValue());
-        assertEquals("Invalid date and time (format dd-MM-yyyy HH:mm)", responseEntity.getBody());
+        assertEquals(String.format("StartTime %S is earlier than EndTime %s", request.startTime(), request.endTime()), responseEntity.getBody());
     }
 
     @Test
-    public void testCreateLesson_InvalidMaxNumberAttenders() throws IOException, ExecutionException, InterruptedException {
+    public void testCreateLesson_whenInvalidDateFormat_shouldReturnBadRequestResponse() throws IOException, ExecutionException, InterruptedException {
         // Given
-        CreateLessonRequest request = new CreateLessonRequest("01-01-2023 10:00", -1);
+        CreateLessonRequest request = new CreateLessonRequest("invalid-date-format", "10:00", "11:00", 10);
+
+        // When
+        ResponseEntity responseEntity = lessonController.createLesson(request);
+
+        // Then
+        assertEquals(400, responseEntity.getStatusCodeValue());
+        assertEquals("Invalid date (format dd-MM-yyyy)", responseEntity.getBody());
+    }
+
+    @Test
+    public void testCreateLesson_whenInvalidStartTimeFormat_shouldReturnBadResponse() throws IOException, ExecutionException, InterruptedException {
+        // Given
+        CreateLessonRequest request = new CreateLessonRequest("31-01-2024", "10:73", "11:00", 10);
+
+        // When
+        ResponseEntity responseEntity = lessonController.createLesson(request);
+
+        // Then
+        assertEquals(400, responseEntity.getStatusCodeValue());
+        assertEquals("Invalid start time (format HH:mm)", responseEntity.getBody());
+    }
+
+    @Test
+    public void testCreateLesson_whenMaxNumberAttendersIsZero_shouldReturnBadRequestResponse() throws IOException, ExecutionException, InterruptedException {
+        // Given
+        CreateLessonRequest request = new CreateLessonRequest("31-01-2023", "10:00", "11:00", 0);
+
+        // When
+        ResponseEntity responseEntity = lessonController.createLesson(request);
+
+        // Then
+        assertEquals(400, responseEntity.getStatusCodeValue());
+        assertEquals(String.format("The parameter maxNumberAttenders must be a positive number. Actual value: %s", request.maxNumberAttenders()),
+                responseEntity.getBody());
+    }
+
+    @Test
+    public void testCreateLesson_whenNegativeMaxNumberAttenders_shouldReturnBadRequestResponse() throws IOException, ExecutionException, InterruptedException {
+        // Given
+        CreateLessonRequest request = new CreateLessonRequest("31-01-2023", "10:00", "11:00", -1);
 
         // When
         ResponseEntity responseEntity = lessonController.createLesson(request);

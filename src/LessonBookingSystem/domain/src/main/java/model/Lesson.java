@@ -4,8 +4,9 @@ import commands.LessonCommand;
 import events.LessonEvent;
 
 import java.io.InvalidClassException;
-import java.text.MessageFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -13,15 +14,25 @@ import java.util.UUID;
 // Aggregate model.Lesson
 public class Lesson {
     private UUID id;
-    private LocalDateTime dateAndTime;
+    private LocalDate date;
+    private LocalTime startTime;
+    private LocalTime endTime;
     private int maxNumberAttenders;
 
     public UUID getId() {
         return id;
     }
 
-    public LocalDateTime getDateAndTime() {
-        return dateAndTime;
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public LocalTime getStartTime() {
+        return startTime;
+    }
+
+    public LocalTime getEndTime() {
+        return endTime;
     }
 
     public int getMaxNumberAttenders() {
@@ -33,8 +44,9 @@ public class Lesson {
         // Only events should change the aggregate status
 
         // Validation:
-        if( command.dateAndTime().isBefore(LocalDateTime.now())) {
-            throw new UnsupportedOperationException("The date and time for the lesson is in the past");
+        var startDateAndTime = command.startTime().atDate(command.date());
+        if( startDateAndTime.isBefore(LocalDateTime.now())) {
+            throw new UnsupportedOperationException("The date and time for the begin of the lesson is in the past");
         }
 
         if ( command.maxNumberAttenders() <= 0 ){
@@ -48,7 +60,9 @@ public class Lesson {
                         UUID.randomUUID(),
                         command.lessonId(),
                         1,
-                        command.dateAndTime(),
+                        command.date(),
+                        command.startTime(),
+                        command.endTime(),
                         command.maxNumberAttenders()));
 
         // Use the events to evolve the aggregate status
@@ -66,7 +80,9 @@ public class Lesson {
     public void evolve(LessonEvent event) throws InvalidClassException {
         if (event instanceof LessonEvent.LessonCreated e) {
             this.id = e.lessonId();
-            this.dateAndTime = e.dateAndTime();
+            this.date = e.date();
+            this.startTime = e.startTime();
+            this.endTime = e.endTime();
             this.maxNumberAttenders = e.maxNumberAttenders();
         } else {
             // Unknown event type

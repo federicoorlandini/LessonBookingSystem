@@ -9,7 +9,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
@@ -20,9 +21,9 @@ public class CreateLessonUseCaseImpl implements CreateLessonUseCase {
     private LessonRepository lessonRepository;
 
     @Override
-    public Lesson CreateLesson(LocalDateTime dateAndTime, int maxNumberAttenders) throws IOException, ExecutionException, InterruptedException {
+    public Lesson CreateLesson(LocalDate date, LocalTime startTime, LocalTime endTime, int maxNumberAttenders) throws IOException, ExecutionException, InterruptedException {
         // Trigger the command
-        var command = new LessonCommand.CreateLessonCommand(UUID.randomUUID(), dateAndTime, maxNumberAttenders);
+        var command = new LessonCommand.CreateLessonCommand(UUID.randomUUID(), date, startTime, endTime, maxNumberAttenders);
         var newLesson = new Lesson();   // TODO - Refactor using factory pattern?
         var events = newLesson.handle(command);
 

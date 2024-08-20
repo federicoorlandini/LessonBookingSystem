@@ -6,7 +6,8 @@ import org.mockito.*;
 import com.federico.LessonBookingSystem.application.usecases.CreateLessonUseCaseImpl;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
@@ -23,7 +24,9 @@ public class CreateLessonUseCaseTests {
     @Captor
     private ArgumentCaptor<ArrayList<LessonEvent>> captor;
 
-    private final LocalDateTime DATE_AND_TIME = LocalDateTime.now().plusDays(1); // In the future, to pass validations
+    private final LocalDate DATE = LocalDate.now().plusDays(1); // In the future, to pass validations
+    private final LocalTime START_TIME = LocalTime.now();
+    private final LocalTime END_TIME = LocalTime.now().plusHours(1);
     private final int MAX_NUMBER_ATTENDERS = 5;
 
     @BeforeEach
@@ -36,7 +39,7 @@ public class CreateLessonUseCaseTests {
         // Arrange
 
         // Act
-        useCase.CreateLesson(DATE_AND_TIME, MAX_NUMBER_ATTENDERS);
+        useCase.CreateLesson(DATE, START_TIME, END_TIME, MAX_NUMBER_ATTENDERS);
 
         // Assert
         verify(lessonRepository, times(1)).save(captor.capture());
@@ -49,7 +52,9 @@ public class CreateLessonUseCaseTests {
         assertThat(capturedEvent.version()).isEqualTo(1);
         assertThat(capturedEvent).isInstanceOf(LessonEvent.LessonCreated.class);
         var capturedLessonCreatedEvent = (LessonEvent.LessonCreated)capturedEvent;
-        assertThat(capturedLessonCreatedEvent.dateAndTime()).isEqualTo(DATE_AND_TIME);
+        assertThat(capturedLessonCreatedEvent.date()).isEqualTo(DATE);
+        assertThat(capturedLessonCreatedEvent.startTime()).isEqualTo(START_TIME);
+        assertThat(capturedLessonCreatedEvent.endTime()).isEqualTo(END_TIME);
         assertThat(capturedLessonCreatedEvent.maxNumberAttenders()).isEqualTo(MAX_NUMBER_ATTENDERS);
     }
 }

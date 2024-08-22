@@ -1,3 +1,5 @@
+package unit;
+
 import com.federico.LessonBookingSystem.adapters.in.rest.CreateLessonRequest;
 import com.federico.LessonBookingSystem.adapters.in.rest.CreateLessonResponse;
 import com.federico.LessonBookingSystem.adapters.in.rest.LessonController;
@@ -8,7 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.http.ResponseEntity;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -17,6 +18,7 @@ import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 
 public class LessonControllerTests {
@@ -40,8 +42,8 @@ public class LessonControllerTests {
         final var startTimeAsString = "10:00";
         final var endTimeAsString = "11:00";
         final var date = LocalDate.of(2023, 1, 1);
-        final var startTime = LocalTime.of(10, 00);
-        final var endTime = LocalTime.of(11, 00);
+        final var startTime = LocalTime.of(10, 0);
+        final var endTime = LocalTime.of(11, 0);
         final var maxNumberAttenders = 10;
 
         // Given
@@ -57,11 +59,12 @@ public class LessonControllerTests {
                 .thenReturn(lesson);
 
         // When
-        ResponseEntity responseEntity = lessonController.createLesson(request);
+        var responseEntity = lessonController.createLesson(request);
 
         // Then
-        assertEquals(200, responseEntity.getStatusCodeValue());
+        assertEquals(200, responseEntity.getStatusCode().value());
         CreateLessonResponse response = (CreateLessonResponse) responseEntity.getBody();
+        assertNotNull(response);
         assertEquals(uuid, response.lessonId());
         assertEquals(date, response.date());
         assertEquals(startTime, response.startTime());
@@ -75,10 +78,10 @@ public class LessonControllerTests {
         CreateLessonRequest request = new CreateLessonRequest("01-01-2024", "11:00", "10:00", 10);
 
         // When
-        ResponseEntity responseEntity = lessonController.createLesson(request);
+        var responseEntity = lessonController.createLesson(request);
 
         // Then
-        assertEquals(400, responseEntity.getStatusCodeValue());
+        assertEquals(400, responseEntity.getStatusCode().value());
         assertEquals(String.format("StartTime %S is earlier than EndTime %s", request.startTime(), request.endTime()), responseEntity.getBody());
     }
 
@@ -88,10 +91,10 @@ public class LessonControllerTests {
         CreateLessonRequest request = new CreateLessonRequest("invalid-date-format", "10:00", "11:00", 10);
 
         // When
-        ResponseEntity responseEntity = lessonController.createLesson(request);
+        var responseEntity = lessonController.createLesson(request);
 
         // Then
-        assertEquals(400, responseEntity.getStatusCodeValue());
+        assertEquals(400, responseEntity.getStatusCode().value());
         assertEquals("Invalid date (format dd-MM-yyyy)", responseEntity.getBody());
     }
 
@@ -101,10 +104,10 @@ public class LessonControllerTests {
         CreateLessonRequest request = new CreateLessonRequest("31-01-2024", "10:73", "11:00", 10);
 
         // When
-        ResponseEntity responseEntity = lessonController.createLesson(request);
+        var responseEntity = lessonController.createLesson(request);
 
         // Then
-        assertEquals(400, responseEntity.getStatusCodeValue());
+        assertEquals(400, responseEntity.getStatusCode().value());
         assertEquals("Invalid start time (format HH:mm)", responseEntity.getBody());
     }
 
@@ -114,10 +117,10 @@ public class LessonControllerTests {
         CreateLessonRequest request = new CreateLessonRequest("31-01-2023", "10:00", "11:00", 0);
 
         // When
-        ResponseEntity responseEntity = lessonController.createLesson(request);
+        var responseEntity = lessonController.createLesson(request);
 
         // Then
-        assertEquals(400, responseEntity.getStatusCodeValue());
+        assertEquals(400, responseEntity.getStatusCode().value());
         assertEquals(String.format("The parameter maxNumberAttenders must be a positive number. Actual value: %s", request.maxNumberAttenders()),
                 responseEntity.getBody());
     }
@@ -128,10 +131,10 @@ public class LessonControllerTests {
         CreateLessonRequest request = new CreateLessonRequest("31-01-2023", "10:00", "11:00", -1);
 
         // When
-        ResponseEntity responseEntity = lessonController.createLesson(request);
+        var responseEntity = lessonController.createLesson(request);
 
         // Then
-        assertEquals(400, responseEntity.getStatusCodeValue());
+        assertEquals(400, responseEntity.getStatusCode().value());
         assertEquals("The parameter maxNumberAttenders must be a positive number. Actual value: -1", responseEntity.getBody());
     }
 }

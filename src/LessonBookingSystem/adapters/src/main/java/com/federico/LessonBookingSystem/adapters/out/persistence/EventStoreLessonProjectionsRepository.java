@@ -12,7 +12,6 @@ import java.util.concurrent.ExecutionException;
 
 @Repository
 public class EventStoreLessonProjectionsRepository implements LessonProjectionsRepository {
-    private final String LESSONS_PROJECTION_NAME = "LessonProjection";
 
     private final EventStoreDBProjectionManagementClient projectionClient;
 

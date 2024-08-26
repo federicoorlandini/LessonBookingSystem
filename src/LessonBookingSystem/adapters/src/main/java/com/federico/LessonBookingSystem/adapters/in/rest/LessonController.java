@@ -1,5 +1,6 @@
 package com.federico.LessonBookingSystem.adapters.in.rest;
 
+import com.federico.LessonBookingSystem.application.projections.ports.in.GetLessonsProjectionUseCase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +19,7 @@ import java.util.concurrent.ExecutionException;
 @RestController
 public class LessonController {
     private final CreateLessonUseCase createLessonUseCase;
+    private final GetLessonsProjectionUseCase getLessonsProjectionUseCase;
 
     private final String DATE_FORMATTER_PATTERN = "dd-MM-yyyy";
     private final String TIME_FORMATTER_PATTERN = "HH:mm";
@@ -25,8 +27,10 @@ public class LessonController {
     private final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern(TIME_FORMATTER_PATTERN);
 
     @Autowired
-    public LessonController(CreateLessonUseCase createLessonUseCase) {
+    public LessonController(CreateLessonUseCase createLessonUseCase,
+                            GetLessonsProjectionUseCase getLessonsProjectionUseCase) {
         this.createLessonUseCase = createLessonUseCase;
+        this.getLessonsProjectionUseCase = getLessonsProjectionUseCase;
     }
 
     @PostMapping("/lesson")
@@ -95,8 +99,12 @@ public class LessonController {
     }
 
     @GetMapping("/lessons")
-    public ResponseEntity getLessons() {
-        return null;
+    public ResponseEntity getLessons() throws ExecutionException, InterruptedException {
+        var lessons = getLessonsProjectionUseCase.GetLessonsProjection();
+
+        var response = new GetLessonsProjectionResponse(lessons);
+
+        return ResponseEntity.ok(response);
     }
 }
 

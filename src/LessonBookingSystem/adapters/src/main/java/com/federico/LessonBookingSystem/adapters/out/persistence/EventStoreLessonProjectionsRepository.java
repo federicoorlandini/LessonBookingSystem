@@ -1,18 +1,22 @@
 package com.federico.LessonBookingSystem.adapters.out.persistence;
 
 import com.eventstore.dbclient.EventStoreDBProjectionManagementClient;
-import com.federico.LessonBookingSystem.application.projections.ports.in.models.Lesson;
+import model.Lesson;
 import com.federico.LessonBookingSystem.application.projections.ports.out.persistence.LessonProjectionsRepository;
 import jdk.jshell.spi.ExecutionControl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 @Repository
 public class EventStoreLessonProjectionsRepository implements LessonProjectionsRepository {
-
+    // This class is only used to deserialize the result of the projection LessonProjection
+    private static class LessonProjectionResult {
+        public ArrayList<Lesson> lessons;
+    }
     private final EventStoreDBProjectionManagementClient projectionClient;
 
     @Autowired
@@ -33,34 +37,34 @@ public class EventStoreLessonProjectionsRepository implements LessonProjectionsR
     }
 
     @Override
-    public List<Lesson> GetLessons() {
-        return List.of();
+    public List<Lesson> GetLessons() throws ExecutionException, InterruptedException {
+        var deserializedEntity = projectionClient.getResult(LESSONS_PROJECTION_NAME, LessonProjectionResult.class).get();
+        return deserializedEntity.lessons;
     }
 
-    private boolean ProjectionExists() throws ExecutionControl.NotImplementedException, ExecutionException, InterruptedException {
+    private boolean ProjectionExists() throws ExecutionException, InterruptedException {
         var projections = projectionClient.list().get();
         return projections
                 .stream()
                 .anyMatch(item -> item.getName().equalsIgnoreCase(LESSONS_PROJECTION_NAME));
     }
 
-    private void CreateProjection() throws ExecutionControl.NotImplementedException, ExecutionException, InterruptedException {
+    private void CreateProjection() throws ExecutionException, InterruptedException {
         final String LESSON_STATUS_JS_SCRIPT = "fromAll()\n" +
                 "    .when({\n" +
                 "        $init: function () {\n" +
                 "            return {\n" +
-                "                rows: []\n" +
+                "                lessons: []\n" +
                 "            }\n" +
                 "        },\n" +
                 "        LessonCreated: function (state, event) {\n" +
                 "            const bodyraw = JSON.parse(event.bodyRaw);\n" +
-                "            log('LOG:' + JSON.stringify(bodyraw.lessonId));\n" +
-                "            state.rows.push({lessonId: bodyraw.lessonId,\n" +
+                "            state.lessons.push({id: bodyraw.lessonId,\n" +
                 "                date: bodyraw.date,\n" +
                 "                startTime: bodyraw.startTime,\n" +
                 "                endTime: bodyraw.endTime,\n" +
                 "                maxNumberAttenders: bodyraw.maxNumberAttenders,\n" +
-                "                status: 'open'});\n" +
+                "                status: 'OPEN'});\n" +
                 "        }\n" +
                 "    })\n" +
                 "    .outputState()";

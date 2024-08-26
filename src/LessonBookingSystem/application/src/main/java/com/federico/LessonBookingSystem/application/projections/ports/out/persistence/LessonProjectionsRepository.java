@@ -1,6 +1,6 @@
 package com.federico.LessonBookingSystem.application.projections.ports.out.persistence;
 
-import com.federico.LessonBookingSystem.application.projections.ports.in.models.Lesson;
+import model.Lesson;
 import jdk.jshell.spi.ExecutionControl;
 
 import java.util.List;
@@ -10,5 +10,5 @@ public interface LessonProjectionsRepository {
     String LESSONS_PROJECTION_NAME = "LessonProjection";
 
     void EnsureProjectionExists() throws ExecutionException, InterruptedException, ExecutionControl.NotImplementedException;
-    List<Lesson> GetLessons();
+    List<Lesson> GetLessons() throws ExecutionException, InterruptedException;
 }

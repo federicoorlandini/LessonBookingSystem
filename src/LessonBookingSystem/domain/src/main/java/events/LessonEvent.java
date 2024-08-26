@@ -1,7 +1,9 @@
 package events;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalTimeSerializer;
 
 import java.text.MessageFormat;
 import java.time.LocalDate;
@@ -28,9 +30,24 @@ public sealed interface LessonEvent {
              int maxNumberAttenders) implements LessonEvent {
 
           @JsonSerialize(using = LocalDateSerializer.class)
+          @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
           @Override
           public LocalDate date() {
                return date;
+          }
+
+          @JsonSerialize(using = LocalTimeSerializer.class)
+          @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
+          @Override
+          public LocalTime endTime() {
+               return endTime;
+          }
+
+          @JsonSerialize(using = LocalTimeSerializer.class)
+          @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
+          @Override
+          public LocalTime startTime() {
+               return startTime;
           }
      };
 }

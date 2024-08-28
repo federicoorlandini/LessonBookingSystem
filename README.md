@@ -10,6 +10,7 @@ I started this project to dirt my hands with these technologies:
 * Event sourcing
 * Hexagonal architecture
 * Java SpringBoot with Gradle
+    * Integration tests using TestContainers (https://testcontainers.com/) for the EventStoreDB
 * EventStoreDB (https://www.eventstore.com/eventstoredb)
 * React.js for the front-end
 * The web app must be hosted in Azure

@@ -3,17 +3,20 @@ package unit;
 import com.federico.LessonBookingSystem.adapters.in.rest.CreateLessonRequest;
 import com.federico.LessonBookingSystem.adapters.in.rest.CreateLessonResponse;
 import com.federico.LessonBookingSystem.adapters.in.rest.LessonController;
+import com.federico.LessonBookingSystem.application.projections.ports.in.GetLessonsProjectionUseCase;
 import com.federico.LessonBookingSystem.application.services.ports.in.CreateLessonUseCase;
 import model.Lesson;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
@@ -25,6 +28,9 @@ public class LessonControllerTests {
 
     @Mock
     private CreateLessonUseCase createLessonUseCase;
+
+    @Mock
+    private GetLessonsProjectionUseCase getLessonsProjectionUseCase;
 
     @InjectMocks
     private LessonController lessonController;
@@ -136,5 +142,16 @@ public class LessonControllerTests {
         // Then
         assertEquals(400, responseEntity.getStatusCode().value());
         assertEquals("The parameter maxNumberAttenders must be a positive number. Actual value: -1", responseEntity.getBody());
+    }
+
+
+    @Test
+    void testGetLessons_shouldCallTheRepository() throws Exception {
+        var lessonsProjection = new ArrayList<Lesson>() {{ add(new Lesson()); }};
+        when(getLessonsProjectionUseCase.GetLessonsProjection()).thenReturn(lessonsProjection);
+
+        lessonController.getLessons();
+
+        Mockito.verify(getLessonsProjectionUseCase, times(1)).GetLessonsProjection();
     }
 }

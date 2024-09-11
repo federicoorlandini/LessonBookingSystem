@@ -1,6 +1,6 @@
 <mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/24.7.8 Chrome/128.0.6613.36 Electron/32.0.1 Safari/537.36" version="24.7.8">
   <diagram name="Page-1" id="_SDO8nhmoOXQYO2rX4mI">
-    <mxGraphModel dx="6586" dy="4956" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="2350" dy="1999" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -644,7 +644,7 @@
             <mxPoint x="2336" y="-458" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="HA1ot9lvhziufV7eDGHD-44" value="Get Lessons overview" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=20;fontStyle=1" parent="1" vertex="1">
+        <mxCell id="HA1ot9lvhziufV7eDGHD-44" value="Get Lessons overview&lt;div&gt;(GetLessonOverviewUseCase)&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=20;fontStyle=1" parent="1" vertex="1">
           <mxGeometry x="2996" y="-421" width="280" height="30" as="geometry" />
         </mxCell>
         <mxCell id="Y_fyV_vxrEpBVYRtcQlb-1" value="" style="endArrow=none;html=1;rounded=0;" parent="1" edge="1">
@@ -1203,7 +1203,7 @@
         <mxCell id="U3dkyzCxHfoXuDJUo3gk-564" value="POST /lessons/register" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="921" y="2243" width="120" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="U3dkyzCxHfoXuDJUo3gk-565" value="Create Lesson" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=20;fontStyle=1" parent="1" vertex="1">
+        <mxCell id="U3dkyzCxHfoXuDJUo3gk-565" value="Create Lesson&lt;div&gt;(CreateLessonUseCase&lt;span style=&quot;background-color: initial;&quot;&gt;)&lt;/span&gt;&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=20;fontStyle=1" parent="1" vertex="1">
           <mxGeometry x="290" y="-390" width="180" height="30" as="geometry" />
         </mxCell>
         <mxCell id="U3dkyzCxHfoXuDJUo3gk-568" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="U3dkyzCxHfoXuDJUo3gk-566" target="U3dkyzCxHfoXuDJUo3gk-567" edge="1">

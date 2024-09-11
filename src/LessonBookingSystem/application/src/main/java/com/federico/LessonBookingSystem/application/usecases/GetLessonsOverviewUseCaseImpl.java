@@ -1,5 +1,6 @@
 package com.federico.LessonBookingSystem.application.usecases;
 
+import com.federico.LessonBookingSystem.application.projections.ports.in.GetLessonsOverviewUseCase;
 import model.Lesson;
 import com.federico.LessonBookingSystem.application.projections.ports.out.persistence.LessonProjectionsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +10,7 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 @Service
-public class GetLessonsProjectionUseCaseImpl implements com.federico.LessonBookingSystem.application.projections.ports.in.GetLessonsProjectionUseCase {
+public class GetLessonsOverviewUseCaseImpl implements GetLessonsOverviewUseCase {
     @Autowired
     private LessonProjectionsRepository lessonProjectionsRepository;
 

@@ -4,6 +4,6 @@ import model.Lesson;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-public interface GetLessonsProjectionUseCase {
+public interface GetLessonsOverviewUseCase {
     List<Lesson> GetLessonsProjection() throws ExecutionException, InterruptedException;
 }

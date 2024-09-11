@@ -3,7 +3,7 @@ package unit;
 import com.federico.LessonBookingSystem.adapters.in.rest.CreateLessonRequest;
 import com.federico.LessonBookingSystem.adapters.in.rest.CreateLessonResponse;
 import com.federico.LessonBookingSystem.adapters.in.rest.LessonController;
-import com.federico.LessonBookingSystem.application.projections.ports.in.GetLessonsProjectionUseCase;
+import com.federico.LessonBookingSystem.application.projections.ports.in.GetLessonsOverviewUseCase;
 import com.federico.LessonBookingSystem.application.services.ports.in.CreateLessonUseCase;
 import model.Lesson;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,7 +30,7 @@ public class LessonControllerTests {
     private CreateLessonUseCase createLessonUseCase;
 
     @Mock
-    private GetLessonsProjectionUseCase getLessonsProjectionUseCase;
+    private GetLessonsOverviewUseCase getLessonsOverviewUseCase;
 
     @InjectMocks
     private LessonController lessonController;
@@ -148,10 +148,10 @@ public class LessonControllerTests {
     @Test
     void testGetLessons_shouldCallTheRepository() throws Exception {
         var lessonsProjection = new ArrayList<Lesson>() {{ add(new Lesson()); }};
-        when(getLessonsProjectionUseCase.GetLessonsProjection()).thenReturn(lessonsProjection);
+        when(getLessonsOverviewUseCase.GetLessonsProjection()).thenReturn(lessonsProjection);
 
         lessonController.getLessons();
 
-        Mockito.verify(getLessonsProjectionUseCase, times(1)).GetLessonsProjection();
+        Mockito.verify(getLessonsOverviewUseCase, times(1)).GetLessonsProjection();
     }
 }

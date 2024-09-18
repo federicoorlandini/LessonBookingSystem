@@ -19,12 +19,13 @@ I started this project to dirt my hands with these technologies:
 ## Objective
 The objective of this project is to build a simple software that can help in managing presences for lessons. For example, boxing lessons, gym lessons, etc.
 
-## Stories
-This system must allow the users to:
+## User stories
+Refer to the event modelling model here (Draw.io diagram): https://github.com/federicoorlandini/LessonBookingSystem/blob/main/diagrams/LessonBookingSystem%20-%20Event%20modelling.drawio
 
-* As administrator, 
-    I want to be able to define a list of available lessons, including the date of the lesson, the start time and the end time and the max allowed participants
-* As administrator,
-    I want to be able to see the list of the partecipants to a lesson
-* As member,
-    I want to be able to book a spot in a lesson
+## Resources
+* Event modelling:
+    * Event modelling - https://eventmodeling.org/
+    * Copenhagen DDD Event Modeling with Adam Dymitruk - https://www.youtube.com/watch?v=U_MwAEf8V_A
+
+* Event sourcing:
+    * Oskar Dudycz - Pragmatic about programming - https://event-driven.io/en/

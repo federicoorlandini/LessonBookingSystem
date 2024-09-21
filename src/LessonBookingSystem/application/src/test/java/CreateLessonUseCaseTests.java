@@ -1,5 +1,6 @@
 import com.federico.LessonBookingSystem.application.services.ports.out.persistence.LessonRepository;
 import events.LessonEvent;
+import model.Lesson;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;

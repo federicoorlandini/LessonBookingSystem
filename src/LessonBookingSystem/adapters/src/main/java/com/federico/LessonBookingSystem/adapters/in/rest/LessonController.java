@@ -94,7 +94,8 @@ public class LessonController {
                 newLesson.getDate(),
                 newLesson.getStartTime(),
                 newLesson.getEndTime(),
-                newLesson.getMaxNumberAttenders());
+                newLesson.getMaxNumberAttenders(),
+                newLesson.getStatus());
         return ResponseEntity.ok(response);
     }
 

@@ -51,6 +51,7 @@ public class LessonControllerTests {
         final var startTime = LocalTime.of(10, 0);
         final var endTime = LocalTime.of(11, 0);
         final var maxNumberAttenders = 10;
+        final var status = Lesson.Status.OPEN;
 
         // Given
         CreateLessonRequest request = new CreateLessonRequest(dateAsString, startTimeAsString, endTimeAsString, maxNumberAttenders);
@@ -60,6 +61,7 @@ public class LessonControllerTests {
         when(lesson.getStartTime()).thenReturn(startTime);
         when(lesson.getEndTime()).thenReturn(endTime);
         when(lesson.getMaxNumberAttenders()).thenReturn(maxNumberAttenders);
+        when(lesson.getStatus()).thenReturn(status);
 
         when(createLessonUseCase.CreateLesson(any(LocalDate.class),any(LocalTime.class), any(LocalTime.class), eq(maxNumberAttenders)))
                 .thenReturn(lesson);
@@ -76,6 +78,7 @@ public class LessonControllerTests {
         assertEquals(startTime, response.startTime());
         assertEquals(endTime, response.endTime());
         assertEquals(maxNumberAttenders, response.maxNumberAttenders());
+        assertEquals(status, response.status());
     }
 
     @Test

@@ -16,9 +16,13 @@ import java.util.concurrent.ExecutionException;
 
 @Service
 public class CreateLessonUseCaseImpl implements CreateLessonUseCase {
-    @Autowired
-    @Qualifier("EventStoreDBRepository")
+
     private LessonRepository lessonRepository;
+
+    @Autowired
+    public CreateLessonUseCaseImpl(@Qualifier("EventStoreDBRepository") LessonRepository lessonRepository) {
+        this.lessonRepository = lessonRepository;
+    }
 
     @Override
     public Lesson CreateLesson(LocalDate date, LocalTime startTime, LocalTime endTime, int maxNumberAttenders) throws IOException, ExecutionException, InterruptedException {

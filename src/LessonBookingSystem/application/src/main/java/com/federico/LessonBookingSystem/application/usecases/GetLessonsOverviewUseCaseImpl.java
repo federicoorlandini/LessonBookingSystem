@@ -11,8 +11,11 @@ import java.util.concurrent.ExecutionException;
 
 @Service
 public class GetLessonsOverviewUseCaseImpl implements GetLessonsOverviewUseCase {
-    @Autowired
     private LessonProjectionsRepository lessonProjectionsRepository;
+
+    public GetLessonsOverviewUseCaseImpl(@Autowired LessonProjectionsRepository lessonProjectionsRepository) {
+        this.lessonProjectionsRepository = lessonProjectionsRepository;
+    }
 
     @Override
     public List<Lesson> GetLessonsProjection() throws ExecutionException, InterruptedException {

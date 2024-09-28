@@ -1,6 +1,6 @@
 package com.federico.LessonBookingSystem.adapters.in.rest;
 
-import model.Lesson;
+import Lesson.Lesson;
 
 import java.util.List;
 

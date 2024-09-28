@@ -1,6 +1,7 @@
-import commands.LessonCommand;
-import events.LessonEvent;
-import model.Lesson;
+import Lesson.LessonCommand;
+import Lesson.LessonEvent;
+import Lesson.Lesson;
+import Lesson.DuplicatedLessonException;
 import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.*;
 
@@ -8,15 +9,18 @@ import java.io.InvalidClassException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.UUID;
+import java.util.List;
 
 public class LessonTests {
     private final LocalDate DATE_IN_THE_FUTURE = LocalDate.now().plusMonths(1);
     private final LocalDate DATE_IN_THE_PAST = LocalDate.now().minusMonths(1);
     private final LocalTime START_TIME = LocalTime.of(10, 0);
     private final LocalTime END_TIME = LocalTime.of(11, 0);
+    private final List<Lesson> EMPTY_LESSONS_LIST = List.of();
 
     @Test
-    public void lesson_whenCreatingALesson_theAggregateSetupShouldBeCorrect() throws InvalidClassException {
+    public void lesson_whenCreatingALesson_theAggregateSetupShouldBeCorrect()
+            throws InvalidClassException, DuplicatedLessonException {
         // Arrange
         var lesson = new Lesson();
         var command = new LessonCommand.CreateLessonCommand(
@@ -24,7 +28,8 @@ public class LessonTests {
                 DATE_IN_THE_FUTURE,
                 START_TIME,
                 END_TIME,
-                10);
+                10,
+                EMPTY_LESSONS_LIST);
 
         // Act
         lesson.handle(command);
@@ -38,7 +43,8 @@ public class LessonTests {
     }
 
     @Test
-    public void lesson_whenCreatingALesson_shouldGenerateACorrectLessonCreatedEvent() throws InvalidClassException {
+    public void lesson_whenCreatingALesson_shouldGenerateACorrectLessonCreatedEvent()
+            throws InvalidClassException, DuplicatedLessonException {
         // Arrange
         var lesson = new Lesson();
         var command = new LessonCommand.CreateLessonCommand(
@@ -46,7 +52,8 @@ public class LessonTests {
                 DATE_IN_THE_FUTURE,
                 START_TIME,
                 END_TIME,
-                10);
+                10,
+                EMPTY_LESSONS_LIST);
 
         // Act
         var events = lesson.handle(command);
@@ -73,7 +80,8 @@ public class LessonTests {
                 DATE_IN_THE_PAST,
                 START_TIME,
                 END_TIME,
-                10);
+                10,
+                EMPTY_LESSONS_LIST);
 
         // Act and assert
         assertThatExceptionOfType(UnsupportedOperationException.class)
@@ -89,7 +97,8 @@ public class LessonTests {
                 DATE_IN_THE_FUTURE,
                 START_TIME,
                 END_TIME,
-                0);
+                0,
+                EMPTY_LESSONS_LIST);
 
         // Act and assert
         assertThatExceptionOfType(UnsupportedOperationException.class)
@@ -105,7 +114,8 @@ public class LessonTests {
                 DATE_IN_THE_FUTURE,
                 START_TIME,
                 END_TIME,
-                -1);
+                -1,
+                EMPTY_LESSONS_LIST);
 
         // Act and assert
         assertThatExceptionOfType(UnsupportedOperationException.class)

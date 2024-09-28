@@ -1,6 +1,6 @@
 package com.federico.LessonBookingSystem.application.services.ports.out.persistence;
 
-import events.LessonEvent;
+import Lesson.LessonEvent;
 
 import java.io.IOException;
 import java.util.List;

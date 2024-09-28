@@ -1,12 +1,10 @@
-package model;
+package Lesson;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalTimeDeserializer;
-import commands.LessonCommand;
-import events.LessonEvent;
 
 import java.io.InvalidClassException;
 import java.time.LocalDate;
@@ -16,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-// Aggregate model.Lesson
+// Aggregate Lesson.Lesson
 public class Lesson {
     public enum Status { OPEN, CANCELED }
 
@@ -63,7 +61,8 @@ public class Lesson {
     public Status getStatus() { return status; }
 
     // Create command handler
-    public List<LessonEvent> handle(LessonCommand.CreateLessonCommand command) throws InvalidClassException {
+    public List<LessonEvent> handle(LessonCommand.CreateLessonCommand command)
+            throws InvalidClassException, DuplicatedLessonException {
         // Command handlers should only validate the command and not change the status.
         // Only events should change the aggregate status
 
@@ -75,6 +74,22 @@ public class Lesson {
 
         if ( command.maxNumberAttenders() <= 0 ){
             throw new UnsupportedOperationException("The max number of attenders must be positive");
+        }
+
+        var isThereAnotherOpenLessonAtSameDayAndTime = command
+                .otherLessonsOnSameDay()
+                .stream()
+                .anyMatch(lesson -> lesson.status == Status.OPEN &&
+                        lesson.startTime.equals(command.startTime()) &&
+                        lesson.endTime.equals(command.endTime()));
+
+        if( isThereAnotherOpenLessonAtSameDayAndTime ) {
+            var message = ("An open lesson for the day {0}, " +
+                    "start time {1} and end time {2} already exists").formatted(
+                            command.date().toString(),
+                            command.startTime().toString(),
+                            command.endTime().toString());
+            throw new DuplicatedLessonException(message);
         }
 
         // Generate the event

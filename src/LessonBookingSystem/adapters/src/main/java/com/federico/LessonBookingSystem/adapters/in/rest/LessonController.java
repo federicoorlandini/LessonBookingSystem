@@ -1,5 +1,6 @@
 package com.federico.LessonBookingSystem.adapters.in.rest;
 
+import Lesson.DuplicatedLessonException;
 import com.federico.LessonBookingSystem.application.projections.ports.in.GetLessonsOverviewUseCase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -34,7 +35,8 @@ public class LessonController {
     }
 
     @PostMapping("/lesson")
-    public ResponseEntity createLesson(@RequestBody CreateLessonRequest request) throws IOException, ExecutionException, InterruptedException {
+    public ResponseEntity createLesson(@RequestBody CreateLessonRequest request)
+            throws IOException, ExecutionException, InterruptedException, DuplicatedLessonException {
         // Validation
         // Date format: dd-MM-yyyy
         // Time format: HH:mm

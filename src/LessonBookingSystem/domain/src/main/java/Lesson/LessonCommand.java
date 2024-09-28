@@ -1,7 +1,8 @@
-package commands;
+package Lesson;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 import java.util.UUID;
 
 public sealed interface LessonCommand {
@@ -10,5 +11,6 @@ public sealed interface LessonCommand {
         LocalDate date,
         LocalTime startTime,
         LocalTime endTime,
-        int maxNumberAttenders) implements LessonCommand { }
+        int maxNumberAttenders,
+        List<Lesson> otherLessonsOnSameDay) implements LessonCommand { }
 }

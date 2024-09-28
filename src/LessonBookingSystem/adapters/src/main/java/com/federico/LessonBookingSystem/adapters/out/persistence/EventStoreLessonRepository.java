@@ -3,7 +3,7 @@ package com.federico.LessonBookingSystem.adapters.out.persistence;
 import com.eventstore.dbclient.EventData;
 import com.eventstore.dbclient.EventStoreDBClient;
 import com.federico.LessonBookingSystem.application.services.ports.out.persistence.LessonRepository;
-import events.LessonEvent;
+import Lesson.LessonEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;

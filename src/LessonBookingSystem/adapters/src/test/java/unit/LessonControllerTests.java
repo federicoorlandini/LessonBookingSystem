@@ -5,7 +5,8 @@ import com.federico.LessonBookingSystem.adapters.in.rest.CreateLessonResponse;
 import com.federico.LessonBookingSystem.adapters.in.rest.LessonController;
 import com.federico.LessonBookingSystem.application.projections.ports.in.GetLessonsOverviewUseCase;
 import com.federico.LessonBookingSystem.application.services.ports.in.CreateLessonUseCase;
-import model.Lesson;
+import Lesson.Lesson;
+import Lesson.DuplicatedLessonException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -43,7 +44,8 @@ public class LessonControllerTests {
     }
 
     @Test
-    public void testCreateLesson_Success() throws IOException, ExecutionException, InterruptedException {
+    public void testCreateLesson_Success()
+            throws IOException, ExecutionException, InterruptedException, DuplicatedLessonException {
         final var dateAsString = "01-01-2023";
         final var startTimeAsString = "10:00";
         final var endTimeAsString = "11:00";
@@ -82,7 +84,8 @@ public class LessonControllerTests {
     }
 
     @Test
-    public void testCreateLesson_whenStartTimeIsLaterThanEndTime_thenShouldReturnBadRequestResponse() throws IOException, ExecutionException, InterruptedException {
+    public void testCreateLesson_whenStartTimeIsLaterThanEndTime_thenShouldReturnBadRequestResponse()
+            throws IOException, ExecutionException, InterruptedException, DuplicatedLessonException {
         // Given
         CreateLessonRequest request = new CreateLessonRequest("01-01-2024", "11:00", "10:00", 10);
 
@@ -95,7 +98,8 @@ public class LessonControllerTests {
     }
 
     @Test
-    public void testCreateLesson_whenInvalidDateFormat_shouldReturnBadRequestResponse() throws IOException, ExecutionException, InterruptedException {
+    public void testCreateLesson_whenInvalidDateFormat_shouldReturnBadRequestResponse()
+            throws IOException, ExecutionException, InterruptedException, DuplicatedLessonException {
         // Given
         CreateLessonRequest request = new CreateLessonRequest("invalid-date-format", "10:00", "11:00", 10);
 
@@ -108,7 +112,8 @@ public class LessonControllerTests {
     }
 
     @Test
-    public void testCreateLesson_whenInvalidStartTimeFormat_shouldReturnBadResponse() throws IOException, ExecutionException, InterruptedException {
+    public void testCreateLesson_whenInvalidStartTimeFormat_shouldReturnBadResponse()
+            throws IOException, ExecutionException, InterruptedException, DuplicatedLessonException {
         // Given
         CreateLessonRequest request = new CreateLessonRequest("31-01-2024", "10:73", "11:00", 10);
 
@@ -121,7 +126,8 @@ public class LessonControllerTests {
     }
 
     @Test
-    public void testCreateLesson_whenMaxNumberAttendersIsZero_shouldReturnBadRequestResponse() throws IOException, ExecutionException, InterruptedException {
+    public void testCreateLesson_whenMaxNumberAttendersIsZero_shouldReturnBadRequestResponse()
+            throws IOException, ExecutionException, InterruptedException, DuplicatedLessonException {
         // Given
         CreateLessonRequest request = new CreateLessonRequest("31-01-2023", "10:00", "11:00", 0);
 
@@ -135,7 +141,8 @@ public class LessonControllerTests {
     }
 
     @Test
-    public void testCreateLesson_whenNegativeMaxNumberAttenders_shouldReturnBadRequestResponse() throws IOException, ExecutionException, InterruptedException {
+    public void testCreateLesson_whenNegativeMaxNumberAttenders_shouldReturnBadRequestResponse()
+            throws IOException, ExecutionException, InterruptedException, DuplicatedLessonException {
         // Given
         CreateLessonRequest request = new CreateLessonRequest("31-01-2023", "10:00", "11:00", -1);
 

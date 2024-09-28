@@ -1,12 +1,13 @@
 package com.federico.LessonBookingSystem.adapters.out.persistence;
 
 import com.eventstore.dbclient.EventStoreDBProjectionManagementClient;
-import model.Lesson;
+import Lesson.Lesson;
 import com.federico.LessonBookingSystem.application.projections.ports.out.persistence.LessonProjectionsRepository;
 import jdk.jshell.spi.ExecutionControl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -40,6 +41,18 @@ public class EventStoreLessonProjectionsRepository implements LessonProjectionsR
     public List<Lesson> GetLessons() throws ExecutionException, InterruptedException {
         var deserializedEntity = projectionClient.getResult(LESSONS_PROJECTION_NAME, LessonProjectionResult.class).get();
         return deserializedEntity.lessons;
+    }
+
+    @Override
+    public List<Lesson> getLessonsByDay(LocalDate day) throws ExecutionException, InterruptedException {
+        // We cannot directly filter the projection in the EventStore server so we need to filter the entire collection
+        return projectionClient
+                .getResult(LESSONS_PROJECTION_NAME, LessonProjectionResult.class)
+                .get()
+                .lessons
+                .stream()
+                .filter(lesson -> lesson.getDate().equals(day))
+                .toList();
     }
 
     private boolean ProjectionExists() throws ExecutionException, InterruptedException {

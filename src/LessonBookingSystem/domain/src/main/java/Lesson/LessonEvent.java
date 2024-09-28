@@ -1,4 +1,4 @@
-package events;
+package Lesson;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -10,7 +10,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.UUID;
 
-// This interface defines the events for the model.Lesson
+// This interface defines the events for the Lesson.Lesson
 public sealed interface LessonEvent {
      UUID eventId();
      UUID lessonId();
